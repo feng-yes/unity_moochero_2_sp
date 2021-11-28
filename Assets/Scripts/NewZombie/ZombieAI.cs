@@ -112,13 +112,14 @@ public class ZombieAI : MonoBehaviour {
 		zombieTransform.gameObject.SetActive (false);
 	}
 
-	//定期更新僵尸状态机的状态
 	void Update(){
+		// 状态显示text 始终朝向玩家
 		textTransform.forward = new Vector3(textTransform.position.x, 0, textTransform.position.z) - new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z);
 	}
 	
 	void FixedUpdate()
 	{
+		//定期更新僵尸状态机的状态
 		FSMUpdate ();
 	}
 
