@@ -45,6 +45,9 @@ public class ZombieAI : MonoBehaviour {
 	private ZombieRender	zombieRender;		//僵尸渲染器控制器组件
 	private Transform targetPlayer;				//僵尸感知范围内的玩家
 
+	private Transform textTransform;
+	private TextMesh textMeshForFSM;
+
 	private bool firstInDead = true;			//僵尸是否首次进入死亡状态
 
 
@@ -67,6 +70,13 @@ public class ZombieAI : MonoBehaviour {
 		if (autoInit)
 			Born ();
 	}
+
+	void Start(){
+		textTransform = zombieTransform.Find("TextStatus");
+		GameObject textObj = textTransform.gameObject;
+		textMeshForFSM = (TextMesh)textObj.GetComponent("TextMesh");
+	}
+
 	//在指定位置初始化僵尸
 	public void Born(Vector3 pos)
 	{
@@ -103,6 +113,10 @@ public class ZombieAI : MonoBehaviour {
 	}
 
 	//定期更新僵尸状态机的状态
+	void Update(){
+		textTransform.forward = new Vector3(textTransform.position.x, 0, textTransform.position.z) - new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z);
+	}
+	
 	void FixedUpdate()
 	{
 		FSMUpdate ();
@@ -116,18 +130,23 @@ public class ZombieAI : MonoBehaviour {
 		{
 		case FSMState.Wander: 
 			UpdateWanderState();
+			textMeshForFSM.text = "Wander";
 			break;
 		case FSMState.Seek:
 			UpdateSeekState();
+			textMeshForFSM.text = "Seek";
 			break;
 		case FSMState.Chase:
 			UpdateChaseState();
+			textMeshForFSM.text = "Chase";
 			break;
 		case FSMState.Attack:
 			UpdateAttackState();
+			textMeshForFSM.text = "Attack";
 			break;
 		case FSMState.Dead:
 			UpdateDeadState ();
+			textMeshForFSM.text = "Dead";
 			break;
 		}
 		//如果僵尸处于非死亡状态，但是生命值减为0，那么进入死亡状态
