@@ -15,10 +15,13 @@ public class IKController : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 	}
 
+	// IK的相关设置必须放在这个回调中
 	void OnAnimatorIK()
 	{
 		if (animator) {
 			if (isActive) {
+				//设置反向动力学，给末端部位设定位置及旋转，反推其他关节的旋转和位置。
+				//下面的Weight表示权重，越接近1，表现越大
 				if (lookObj != null) {
 					//设置玩家的头部IK，使玩家的头部面向头部IK标记物所在的位置
 					animator.SetLookAtWeight (1.0f);
@@ -27,6 +30,7 @@ public class IKController : MonoBehaviour {
 				if (bodyObj != null) {
 					//设置玩家躯干IK，使玩家躯干的旋转角与bodyObj对象的旋转角度相同
 					animator.bodyRotation = bodyObj.rotation;
+					animator.bodyPosition = bodyObj.position;
 				}
 				if (leftHandObj != null) {
 					//设置玩家左手的IK，使玩家左手的位置尽量靠近leftHandObj对象，左手的朝向与leftHandObj相同

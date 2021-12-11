@@ -57,6 +57,7 @@ public class ZombieAI : MonoBehaviour {
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		animator = GetComponent<Animator>();
 		zombieHealth = GetComponent<ZombieHealth> ();
+		// 寻找的对象也包括父对象,所以这里相当于 GetComponent 了
 		zombieSensor = GetComponentInChildren<ZombieSensor> ();
 		zombieRender = GetComponent<ZombieRender> ();
 		zombieTransform = transform;
@@ -167,11 +168,13 @@ public class ZombieAI : MonoBehaviour {
 	private void setMaxAgentSpeed(float maxSpeed)
 	{
 		Vector3 targetVelocity = Vector3.zero;
+		// desiredVelocity 代表 期望速度，是一个 vector
 		if (agent.desiredVelocity.magnitude > maxSpeed) {
 			targetVelocity = agent.desiredVelocity.normalized * maxSpeed;
 		} else {
 			targetVelocity = agent.desiredVelocity;
 		}
+		// velocity 代表 agent 的速度
 		agent.velocity = targetVelocity;
 		currentSpeed = agent.velocity.magnitude;
 
