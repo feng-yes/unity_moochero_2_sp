@@ -53,15 +53,25 @@ public class PlayerMove : MonoBehaviour {
 	}
 	//玩家跳跃函数
 	void Jump(bool isGround){
+
+		// UnityEngine.Profiling.Profiler.BeginSample("My job test");
 		
 		if (CrossPlatformInputManager.GetButtonDown ("Jump") && isGround) {
 			rigid.AddForce (Vector3.up * jumpVelocity, ForceMode.VelocityChange);
+			// for (int i = 0; i < 100000000; i++)
+			// {
+			// 	int a = 1;
+			// 	a = a+1;
+			// }
 			if (anim != null)
 				anim.SetBool ("isJump", true);
 		} else {
 			if(anim != null)
 				anim.SetBool ("isJump", false);
 		}
+
+
+		// UnityEngine.Profiling.Profiler.EndSample();
 	}
 	//每帧检测玩家的输入，更新玩家的位置和朝向
 	void Update()
